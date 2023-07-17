@@ -43,7 +43,7 @@
 🔗 https://www.notion.so/10-840dbeb2ab82458180cc61f33f87bfb0?pvs=4
 
 📌 7月17日 11 일차
-🔗
+🔗 https://www.notion.so/11-4132237c10fa4e6798dfd7483dcba94b
 
 📌 7月18日 12 일차
 🔗
