@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>852</width>
+    <height>726</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="median_flitter">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>700</y>
+     <width>90</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>pictures/Checkbox_Off.png</normaloff>
+     <normalon>pictures/Checkbox_On.png</normalon>pictures/Checkbox_Off.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>91</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="canny_flitter">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>700</y>
+     <width>90</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>pictures/Checkbox_Off.png</normaloff>
+     <normalon>pictures/Checkbox_On.png</normalon>pictures/Checkbox_Off.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>91</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="play_video">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>650</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="stop_video">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>650</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+  </widget>
+  <widget class="QSlider" name="bar">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>570</y>
+     <width>511</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="tickPosition">
+    <enum>QSlider::NoTicks</enum>
+   </property>
+  </widget>
+  <widget class="QSlider" name="vol">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>610</y>
+     <width>71</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>600</y>
+     <width>421</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="state">
+      <property name="text">
+       <string>Media Status</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="playtime">
+      <property name="text">
+       <string>Running time</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="gaussian_flitter">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>700</y>
+     <width>90</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>pictures/Checkbox_Off.png</normaloff>
+     <normalon>pictures/Checkbox_On.png</normalon>pictures/Checkbox_Off.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>91</width>
+     <height>31</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="video_container">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>30</y>
+     <width>761</width>
+     <height>521</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>동영상 자리</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>650</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Gaussian</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Midian</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Canny</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QCheckBox" name="web_cam">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>700</y>
+     <width>74</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>웹캠</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="yolov3_radio">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>700</y>
+     <width>86</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>객체 인식</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>bar</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>playtime</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>195</x>
+     <y>613</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>274</x>
+     <y>663</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
