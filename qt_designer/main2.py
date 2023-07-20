@@ -12,8 +12,12 @@ from PyQt5 import uic
 import datetime
 from PyQt5.QtCore import Qt, QEvent
 from cv2 import GaussianBlur
+from PyQt5.QtCore import QTimer
 import cvlib as cv
 from cvlib.object_detection import draw_bbox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtGui import QPixmap, QIcon
+
 
 def resource_path(relative_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))    
@@ -30,20 +34,46 @@ class WindowClass(QMainWindow, form_class):
         # volume, slider
         self.vol.setRange(0,100)
         self.vol.setValue(50)
+        video_path = 'C:\\Users\\cofla\\Desktop\\laon\\Summer-Field-Practice\\qt_designer\\spongebob.mp4'
+        self.cap = cv2.VideoCapture(video_path)
+        self.total_frames = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        if self.total_frames == 0:
+            self.total_frames = 1
+
+        self.fps = 0  # 초당 프레임 수(Frames Per Second)를 저장할 속성
+
+        # fps 초기화
+        self.update_fps()  # 초당 프레임 수를 업데이트하는 함수 호출
+
+        # timer
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_slider_position)
+        self.timer.start(100)
 
         # signal
         self.play_video.clicked.connect(self.toggle_video)
-        self.stop_video.clicked.connect(self.stop)
+        self.stop_button.clicked.connect(self.stop_video)
+        #self.stop_video.clicked.connect(self.stop)
         self.vol.valueChanged.connect(self.volumeChanged)
         self.bar.sliderMoved.connect(self.barChanged) 
 
-     
+ 
+        self.gaussian_flitter = self.findChild(QPushButton, "gaussian_flitter")
         self.gaussian_flitter.clicked.connect(self.toggle_gaussian)
+
+        # Find the QPushButtons for the filters
+        self.canny_flitter = self.findChild(QPushButton, "canny_flitter")
         self.canny_flitter.clicked.connect(self.toggle_canny)
-        #self.median_flitter = self.findChild(QPushButton, "median_flitter")
+
+        self.median_flitter = self.findChild(QPushButton, "median_flitter")
         self.median_flitter.clicked.connect(self.toggle_median)
-        
-        #self.web_cam = self.findChild(QCheckBox, "web_cam")
+
+        # Add QLabel to show video frames
+        self.label_video = QLabel(self)
+        self.label_video.setGeometry(10, 10, 800, 550)
+
+
+        # webcam
         self.web_cam.stateChanged.connect(self.toggle_webcam)
         
         self.yolov3_radio.clicked.connect(self.set_yolov3_model)
@@ -54,11 +84,15 @@ class WindowClass(QMainWindow, form_class):
         self.is_median_on = False
         self.is_canny_on = False
         self.webcam_on = False
-        self.video_on = False
+        self.video_on = False 
+        
+        self.update_fps()  # 초당 프레임 수를 업데이트하는 함수 호출
+
+
         self.selected_model = 'yolov3'
   
     def run(self):
-        cap = cv2.VideoCapture('C:\\Users\\cofla\\Desktop\\laon\\spongebob.mp4')
+        cap = cv2.VideoCapture('C:\\Users\\cofla\\Desktop\\laon\\Summer-Field-Practice\\qt_designer\\spongebob.mp4')
         width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
    
@@ -84,7 +118,7 @@ class WindowClass(QMainWindow, form_class):
                 h, w, c = img.shape
                 qImg = QtGui.QImage(img.data, w, h, w * c, QtGui.QImage.Format_RGB888)
                 pixmap = QtGui.QPixmap.fromImage(qImg)
-                self.video_container.setPixmap(pixmap)
+                self.label_video.setPixmap(pixmap)
                 sleep(0.02)  # 배속 조정 0.02 -> 0.5배속
             else:
                 QtWidgets.QMessageBox.about(self, "Error", "Cannot read frame.")
@@ -102,60 +136,71 @@ class WindowClass(QMainWindow, form_class):
         th = threading.Thread(target=self.run)
         th.start()
         print("started..")
+        self.timer.start(100)
 
     def onExit(self):
         print("exit")
         self.stop()
     
+    def update_slider_position(self):
+        if self.cap is not None:
+            total_frames = self.cap.get(cv2.CAP_PROP_FRAME_COUNT)
+            current_frame = self.cap.get(cv2.CAP_PROP_POS_FRAMES)
+            if total_frames == 0:
+                total_frames = 1
+            self.bar.setValue(int((current_frame / total_frames) * 100))
 
     def volumeChanged(self):
-        #self.vol.value()
-        self.vol.setNum(self.vol.value())
+        volume_value = self.vol.value()
+        # self.vol_label.setText(f"Volume: {volume_value}")
 
+        # Set the volume of the video (if video is playing)
+        if self.cap is not None and self.video_on:
+            volume = volume_value / 100
+            self.cap.set(cv2.CAP_PROP_VOLUME, volume)
+
+    def update_fps(self):
+        if self.cap is not None:
+            self.fps = self.cap.get(cv2.CAP_PROP_FPS)
+        else:
+            self.fps = 0
+
+
+ #   def barChanged(self):
+        # if self.running and self.cap is not None:
+        #     total_duration = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        #     current_position = int(self.cap.get(cv2.CAP_PROP_POS_FRAMES))
+        #     self.bar.setRange(0, total_duration)
+        #     self.bar.setValue(current_position)
+
+        #     current_time = datetime.timedelta(seconds=int(current_position / self.fps))
+        #     total_time = datetime.timedelta(seconds=int(total_duration / self.fps))
+        #     self.playtime.setText(f"Time: {current_time} / {total_time}")
     def barChanged(self):
-        value = self.bar.value()  
-        print(self.bar)
-        self.bar.setNum(value)    
+        if self.running and self.cap is not None:
+            total_duration = self.total_frames
+            current_position = int(self.cap.get(cv2.CAP_PROP_POS_FRAMES))
+            self.bar.setRange(0, total_duration)
+            self.bar.setValue(current_position)
 
-    def updateState(self):
-        self.state.setText(self.msg)
-
-
-    def updateBar(self):
-        self.bar.setRange(0,self.duration)    
-        self.bar.setSingleStep(int(self.duration/10))
-        self.bar.setPageStep(int(self.duration/10))
-        self.bar.setTickInterval(int(self.duration/10))
-        td = datetime.timedelta(milliseconds=self.duration)        
-        stime = str(td)
-        idx = stime.rfind('.')
-        self.duration = stime[:idx]
-
-    def updatePos(self, pos):
-        self.bar.setValue(pos)
-        td = datetime.timedelta(milliseconds=pos)
-        stime = str(td)
-        idx = stime.rfind('.')
-        stime = f'{stime[:idx]} / {self.duration}'
-        self(stime)
-
-    def updatePos(self, pos):
-        self.bar.setValue(pos)
-        td = datetime.timedelta(milliseconds=pos)
-        stime = str(td)
-        idx = stime.rfind('.')
-        stime = f'{stime[:idx]} / {self.duration}'
-        self.playtime.setText(stime)
- 
+            if total_duration != 0 and self.fps != 0:  # total_duration 또는 self.fps가 0이 아닌 경우에만 시간 계산
+                current_time = datetime.timedelta(seconds=int(current_position / self.fps))
+                total_time = datetime.timedelta(seconds=int(total_duration / self.fps))
+                self.playtime.setText(f"Time: {current_time} / {total_time}")
+            else:
+                self.playtime.setText(f"Time: - / -")  # fps가 0이거나 total_duration이 0인 경우 표시할 값 설정
 
     def toggle_gaussian(self):
-        self.is_gaussian_on = not self.is_gaussian_on
+        if self.sender() == self.findChild(QPushButton, "gaussian_flitter"):
+            self.is_gaussian_on = not self.is_gaussian_on
 
     def toggle_canny(self):
-        self.is_canny_on = not self.is_canny_on
+        if self.sender() == self.findChild(QPushButton, "canny_flitter"):
+            self.is_canny_on = not self.is_canny_on
 
     def toggle_median(self):
-        self.is_median_on = not self.is_median_on
+        if self.sender() == self.findChild(QPushButton, "median_flitter"):
+            self.is_median_on = not self.is_median_on
 
     def toggle_webcam(self):
         self.webcam_on = self.web_cam.isChecked()
@@ -185,7 +230,7 @@ class WindowClass(QMainWindow, form_class):
             self.stop_video()
     
     def start_video(self):
-        self.cap = cv2.VideoCapture('C:\\Users\\cofla\\Desktop\\laon\\spongebob.mp4')
+        self.cap = cv2.VideoCapture('C:\\Users\\cofla\\Desktop\\laon\\Summer-Field-Practice\\qt_designer\\spongebob.mp4')
         self.running = True
         th = threading.Thread(target=self.run)
         th.start()
@@ -201,9 +246,7 @@ class WindowClass(QMainWindow, form_class):
         self.selected_model = 'yolov3'
 
 
-    def update_button_text(self):
-        # Update the button's text based on the current state
-        self.gaussian_flitter.setText("On" if self.is_on else "Off")
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
