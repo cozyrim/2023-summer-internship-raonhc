@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>775</width>
+    <width>1131</width>
     <height>726</height>
    </rect>
   </property>
@@ -246,6 +246,48 @@
    <property name="text">
     <string>객체 인식</string>
    </property>
+  </widget>
+  <widget class="QPushButton" name="binary_button">
+   <property name="geometry">
+    <rect>
+     <x>890</x>
+     <y>120</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>이진화</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="histogram_group">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>170</y>
+     <width>231</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>histogram</string>
+   </property>
+   <widget class="QLabel" name="histogram_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>221</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>히스토그램자리</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
