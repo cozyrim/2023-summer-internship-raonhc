@@ -1,0 +1,13 @@
+train: C:/Users/cofla/yolov8/train/images
+val: C:/Users/cofla/yolov8/valid/images
+test: C:/Users/cofla/yolov8/test/images
+
+nc: 10
+names: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+roboflow:
+  workspace: project-l8dqc
+  project: crosswalk-models
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/project-l8dqc/crosswalk-models/dataset/1
