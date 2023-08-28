@@ -130,7 +130,7 @@
 🔗 https://www.notion.so/38-ad6fd371c76c4645ac030f0d74ba987f?pvs=4
 
 📌 8月28日 39 일차 <br>
-🔗 
+🔗 https://www.notion.so/39-7a9a363a110d42169af90a1715ce803c?pvs=4
 
 📌 8月29日 40 일차 <br>
-🔗 
+🔗 https://www.notion.so/40-dd050707ed1049f181619297611ffe97?pvs=4
